@@ -1,7 +1,6 @@
 package com.example.mybroadcastreceiver_7a
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.mybroadcastreceiver_7a.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -24,9 +24,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         const val ACTION_DOWNLOAD_STATUS = "download status"
     }
 
-
-
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -41,7 +38,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
         val downloadIntentFilter = IntentFilter(ACTION_DOWNLOAD_STATUS)
-        registerReceiver(downloadReceiver, downloadIntentFilter)
+        ContextCompat.registerReceiver(
+            this,
+            downloadReceiver,
+            downloadIntentFilter,
+            ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     private var requestPermissionLauncher = registerForActivityResult(
